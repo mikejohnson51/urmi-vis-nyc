@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UrMI Feature Density</title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
+    <script src="leaflet-fullHash.js"></script>
+</head>
+<body>
+    <div id="map" style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:black;"></div>
+
+    <script>
+        var map = L.map('map', {
+            center: [40.90686744130122, -74.0060],
+            zoom: 9,
+            minZoom: 4,
+            maxZoom: 15
+        });
+        
+        var attr = 'data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors, <a href="https://openstreetmap.org/copyright">ODbL</a>, Imagery © <a href="https://www.openstreetmap.org/user/tyr_asd/">Martin Raifer</a>, <a href="https://creativecommons.org/licenses/by/3.0/">cc-by</a>';
+        
+        var urmi = L.tileLayer('./tiles1km/{z}/{x}/{y}.png', {tms: 1, opacity: 1, attribution: "", minZoom: 4, maxZoom: 15}), 
+            
+            overlay = L.tileLayer('https://api.mapbox.com/styles/v1/openstreetmap/ckasmteyi1tda1ipfis6wqhuq/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidHlyIiwiYSI6ImNpcTdyZWQwbjAwMmhoeW5zbXc1enJ3cWoifQ.094oUYlT0wZbf2Q2wM-QQQ', {
+            opacity: 0.75,
+            attribution: 'overlay &copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
+        });
+        L.control.layers({
+            "UrMI": urmi
+        }, {
+            "locations":overlay
+        }).addTo(map);
+        urmi.addTo(map);
+        overlay.addTo(map);
+        var hash = new L.Hash(map, {
+            "UrMI": urmi,
+            "places":overlay
+        });
+        L.control.scale({metric:true, imperial:false}).addTo(map);
+    </script>
+
+    <script>
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.asnyc = 'async';
+            script.src = 'https://unpkg.com/leaflet.gridlayer.fadeout@0.1.0/Leaflet.GridLayer.FadeOut.js';
+            document.getElementsByTagName('head')[0].appendChild(script);
+        }, 2000);
+    </script>
+</body>
+</html>
